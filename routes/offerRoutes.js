@@ -1,7 +1,7 @@
 import express from "express";
 import {protect} from "../middlewares/auth.js";
 import { authorize } from '../middlewares/roles.js';
-import { createOffer, getAllHr, getRmgOffersWithJDs, getAllOffers, assignOfferToHr } from "../controllers/offerController.js";
+import { createOffer, getAllHr, getRmgOffersWithJDs, getAllOffers, assignOfferToHr, updateOffer } from "../controllers/offerController.js";
 
 const router = express.Router();
 
@@ -10,5 +10,6 @@ router.get("/hr", protect, authorize("RMG"), getAllHr);
 router.get("/overview", protect, authorize("RMG"), getRmgOffersWithJDs);
 router.get("/all-offers", protect, authorize("RMG"), getAllOffers);
 router.post("/assign", protect, authorize("RMG"), assignOfferToHr);
+router.put("/:id/offer-update", protect, authorize("RMG"), updateOffer);
 
 export default router;

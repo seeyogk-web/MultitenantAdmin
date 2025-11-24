@@ -300,3 +300,13 @@ export const assignOfferToHr = asyncHandler(async (req, res, next) => {
 
     res.status(200).json({ success: true, message: 'Offer assigned to HR', data: offer });
 });
+
+export const updateOffer = asyncHandler(async (req, res, next) => {
+    const offerId = req.params.id;
+    const updates = req.body;
+    const offer = await Offer.findByIdAndUpdate(offerId, updates, { new: true });
+    if (!offer) {
+        return next(new ErrorResponse('Offer not found', 404));
+    }
+    res.status(200).json({ success: true, message: 'Offer updated', data: offer });
+});
