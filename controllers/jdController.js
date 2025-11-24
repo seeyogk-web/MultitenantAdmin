@@ -122,3 +122,15 @@ export const createJDWithAI = asyncHandler(async (req, res, next) => {
     aiGenerated: true,
   });
 });
+
+  // export const getAllJds = asyncHandler(async (req, res, next) => {
+  //   const jds = await JD.find().populate('offerId').populate('createdBy', 'name email');
+  //   res.status(200).json({ success: true, count: jds.length, data: jds });
+  // });
+
+export const getAllJds = asyncHandler(async (req, res, next) => {
+  const jds = await JD.find()
+    .populate('offerId')
+    .populate('createdBy', 'name email');
+  res.status(200).json({ success: true, count: jds.length, data: jds });
+});

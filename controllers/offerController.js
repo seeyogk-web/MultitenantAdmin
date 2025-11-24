@@ -310,3 +310,13 @@ export const updateOffer = asyncHandler(async (req, res, next) => {
     }
     res.status(200).json({ success: true, message: 'Offer updated', data: offer });
 });
+
+
+export const deleteOffer = asyncHandler(async (req, res, next) => {
+    const offerId = req.params.id;
+    const offer = await Offer.findByIdAndDelete(offerId);
+    if (!offer) {
+        return next(new ErrorResponse('Offer not found', 404));
+    }
+    res.status(200).json({ success: true, message: 'Offer deleted', data: offer });
+});
