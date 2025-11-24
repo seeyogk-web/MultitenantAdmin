@@ -284,3 +284,19 @@ export const getAllOffers = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse(err.message || 'Failed to fetch offers', 500));
   }
 });
+
+export const assignOfferToHr = asyncHandler(async (req, res, next) => {
+    const { offerId, hrId } = req.body;
+    const offer = await Offer.findById(offerId);
+    if (!offer) {
+        return next(new ErrorResponse('Offer not found', 404));
+    }
+    const hrUser = await User.findById(hrId);
+    if (!hrUser || hrUser.role !== "HR") {
+        return next(new ErrorResponse('HR user not found', 404));
+    }
+    offer.assignedTo = hrId;
+    await offer.save();
+
+    res.status(200).json({ success: true, message: 'Offer assigned to HR', data: offer });
+});
