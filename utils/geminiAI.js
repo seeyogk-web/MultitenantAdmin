@@ -29,7 +29,6 @@ export const generateJDWithAI = async (offerDetails, additionalDetails) => {
 **Additional HR Details:**
 - Company Name: ${additionalDetails.companyName || "Not specified"}
 - Department: ${additionalDetails.department || "Not specified"}
-- Reporting Manager: ${additionalDetails.reportingManager || "Not specified"}
 - Key Responsibilities: ${additionalDetails.keyResponsibilities || "Not specified"}
 - Required Qualifications: ${additionalDetails.qualifications || "Not specified"}
 - Benefits: ${additionalDetails.benefits || "Not specified"}
@@ -174,6 +173,13 @@ export async function downloadFile(url) {
 //   return JSON.parse(json[0]);
 // }
 
+
+function sanitizeJSON(str) {
+  if (!str) return "";
+  return str.replace(/[\u0000-\u0019]+/g, " ");
+}
+
+
 export async function extractResumeText(resumeUrl) {
   const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
@@ -199,7 +205,7 @@ Return JSON:
     }
   ]);
 
-  const text = result.response.text();
+  const text = sanitizeJSON(result.response.text());
   const json = text.match(/\{[\s\S]*\}/);
 
   return JSON.parse(json[0]);
@@ -235,7 +241,7 @@ Return ONLY this JSON:
 `;
 
   const result = await model.generateContent(prompt);
-  const text = result.response.text();
+  const text = sanitizeJSON(result.response.text());
   const json = text.match(/\{[\s\S]*\}/);
 
   return JSON.parse(json[0]);
@@ -253,10 +259,15 @@ export async function filterResumesWithAI(jd, candidates) {
       const extraction = await extractResumeText(candidate.resume);
 
       if (!extraction.isResume) {
+        // unfiltered.push({
+        //   id: candidate.id,
+        //   score: 0,
+        //   explanation: "The uploaded document is not a resume. " + extraction.content
+        // });
         unfiltered.push({
           id: candidate.id,
           score: 0,
-          explanation: "The uploaded document is not a resume. " + extraction.content
+          explanation: sanitizeJSON("The uploaded document is not a resume. " + extraction.content)
         });
         continue;
       }
