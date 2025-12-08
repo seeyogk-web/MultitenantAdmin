@@ -8,7 +8,7 @@ const router = express.Router();
 router.post("/", protect, authorize("RMG"), createOffer);
 router.get("/hr", protect, authorize("RMG"), getAllHr);
 router.get("/overview", protect, authorize("RMG"), getRmgOffersWithJDs);
-router.get("/all-offers", protect, authorize("RMG"), getAllOffers);
+router.get("/all-offers", protect, authorize("RMG", "Admin"), getAllOffers);
 router.post("/assign", protect, authorize("RMG"), assignOfferToHr);
 router.put("/:id/offer-update", protect, authorize("RMG"), updateOffer);
 router.delete("/:id", protect, authorize("RMG"), deleteOffer);

@@ -13,8 +13,8 @@ router.post("/:offerId", protect, authorize("HR"), createJD);
 // AI-powered JD creation
 router.post("/:offerId/ai", protect, authorize("HR"), createJDWithAI);
 router.post("/:jdId/filter-resumes", protect, authorize("HR"), filterResumes);
-router.get("/all-jd", protectCandidate, getAllJds);
-router.get("/all-candidates", protect, authorize("HR"), getAllCandidates);
+router.get("/all-jd", protect, authorize("Admin"), getAllJds);
+router.get("/all-candidates", protect, authorize("HR", "Admin"), getAllCandidates);
 router.post("/:jdId/add-resume", protect, authorize("HR"), addresumeToJD);
 router.get("/:jdId/candidates", protect, authorize("HR"), getAllCandidatesAppliedToJD);
 router.get("/assigned-jds/hr", protect, authorize("HR"), getAssignedJDsByRMG);
