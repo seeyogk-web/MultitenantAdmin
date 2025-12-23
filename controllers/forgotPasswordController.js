@@ -60,12 +60,12 @@ export const changePassword = async (req, res, next) => {
   if (!user || !user.resetPasswordOTP || !user.resetPasswordOTPExpiry || user.resetPasswordOTPExpiry < Date.now()) {
     return res.status(400).json({ message: 'OTP validation required or expired.' });
   }
+  
+  user.ispasswordchanged = true;
   user.password = newPassword;
   user.resetPasswordOTP = undefined;
   user.resetPasswordOTPExpiry = undefined;
-  if(user.ispasswordChanged === false){
-    user.ispasswordChanged = true;
-  }
+ 
  
   await user.save();
   res.status(200).json({ message: 'Password changed successfully.' });
