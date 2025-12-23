@@ -15,8 +15,8 @@ const cleanId = (val, jd) => {
 
 
 export const filterResumes = asyncHandler(async (req, res) => {
-  const { jdId } = req.params;
-
+  let { jdId } = req.params;
+  jdId = jdId.trim();
   const jd = await JD.findById(jdId).populate("appliedCandidates.candidate");
   if (!jd) return res.status(404).json({ success: false, message: "JD not found" });
 

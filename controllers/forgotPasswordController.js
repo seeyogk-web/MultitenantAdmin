@@ -2,7 +2,6 @@
 import User from '../models/User.js';
 import { resetPasswordTemplate } from '../utils/emailTemplates/resetPasswordTemplate.js';
 import sendEmail from '../utils/sendEmail.js';
-import { resetPasswordTemplate } from '../utils/emailTemplates/resetPasswordTemplate.js';
 import crypto from 'crypto';
 
 function generateOTP() {
